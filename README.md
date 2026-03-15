@@ -4,7 +4,7 @@
 
 Think "DeepEval but for generative media." Structured, actionable quality assessments for AI-generated images — designed for AI agents, not dashboards.
 
-[Website](https://eval.media) | [PyPI](https://pypi.org/project/evalmedia/) | [GitHub](https://github.com/evalmedia/evalmedia)
+[Website](https://evalmedia.com) | [PyPI](https://pypi.org/project/evalmedia/) | [GitHub](https://github.com/saidkaban/evalmedia)
 
 ## Install
 

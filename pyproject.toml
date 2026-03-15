@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "evalmedia"
-version = "0.1.0"
+version = "0.1.1"
 description = "Open-source framework for evaluating AI-generated media quality"
 readme = "README.md"
 license = "Apache-2.0"
@@ -53,9 +53,9 @@ all = ["evalmedia[claude,openai,classical,cli]"]
 evalmedia = "evalmedia.cli.main:app"
 
 [project.urls]
-Homepage = "https://eval.media"
-Repository = "https://github.com/evalmedia/evalmedia"
-Issues = "https://github.com/evalmedia/evalmedia/issues"
+Homepage = "https://evalmedia.com"
+Repository = "https://github.com/saidkaban/evalmedia"
+Issues = "https://github.com/saidkaban/evalmedia/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/evalmedia"]

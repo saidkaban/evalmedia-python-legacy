@@ -447,7 +447,7 @@ Optional dependency groups:
 - **PyPI package:** `evalmedia`
 - **Import:** `import evalmedia`
 - **GitHub repo:** `evalmedia`
-- **Domain:** `eval.media`
+- **Domain:** `evalmedia.com`
 - **CLI command:** `evalmedia`
 
 ## License

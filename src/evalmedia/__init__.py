@@ -1,6 +1,6 @@
 """evalmedia — Evaluate AI-generated media quality."""
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from evalmedia.config import set_judge
 from evalmedia.core import CheckResult, CheckStatus, CompareResult, EvalResult
