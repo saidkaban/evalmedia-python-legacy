@@ -75,8 +75,6 @@ class ImageEval:
             raise ValueError("Either 'checks' or 'rubric' must be provided.")
 
         # Load image
-        from PIL import Image as PILImage
-
         pil_image = await load_image(image)
 
         # Resolve judge
