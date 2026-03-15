@@ -1,0 +1,18 @@
+name: marketing_asset
+description: "Quality evaluation rubric optimized for text-heavy marketing images."
+pass_threshold: 0.70
+checks:
+  - check: text_legibility
+    weight: 0.30
+    threshold: 0.6
+  - check: prompt_adherence
+    weight: 0.25
+  - check: aesthetic_quality
+    weight: 0.20
+  - check: resolution_adequacy
+    weight: 0.15
+    params:
+      min_width: 1080
+      min_height: 1080
+  - check: clip_similarity
+    weight: 0.10
