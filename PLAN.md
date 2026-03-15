@@ -333,6 +333,7 @@ The first release should be tight, opinionated, and immediately useful. Image-on
 | `StyleConsistency` | VLM | Does this match a provided style reference image? (requires ref) |
 | `CLIPSimilarity` | Classical | CLIP cosine similarity between prompt and image |
 | `ResolutionAdequacy` | Classical | Is the resolution sufficient for the intended use? |
+| `CustomCheck` | VLM (user-defined) | User-defined evaluation criteria in natural language |
 
 ### V1 Judge Backends
 

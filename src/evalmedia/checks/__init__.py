@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from evalmedia.checks.base import BaseCheck, ClassicalCheck, VLMCheck
+from evalmedia.checks.custom import CustomCheck
 
-__all__ = ["BaseCheck", "ClassicalCheck", "VLMCheck", "get_check", "list_checks"]
+__all__ = ["BaseCheck", "ClassicalCheck", "CustomCheck", "VLMCheck", "get_check", "list_checks"]
 
 CHECK_REGISTRY: dict[str, type[BaseCheck]] = {}
 
