@@ -248,7 +248,8 @@ evalmedia/
 │       │   │   ├── style_consistency.py
 │       │   │   ├── resolution_adequacy.py
 │       │   │   ├── hand_artifacts.py
-│       │   │   ├── clip_similarity.py       # classical check
+│       │   │   ├── clip_similarity.py       # classical check (prompt ↔ image)
+│       │   │   ├── image_similarity.py     # classical check (image ↔ image, CLIP/DINOv2)
 │       │   │   └── lpips_similarity.py      # classical check
 │       │   ├── video/                       # v2 — not in initial release
 │       │   │   └── ...
@@ -258,8 +259,9 @@ evalmedia/
 │       ├── judges/
 │       │   ├── __init__.py          # judge registry
 │       │   ├── base.py              # Judge protocol/ABC
-│       │   ├── claude.py
-│       │   ├── openai.py
+│       │   ├── claude.py            # Anthropic Messages API
+│       │   ├── openai.py            # OpenAI Responses API + structured output
+│       │   ├── openrouter.py        # OpenRouter gateway (OpenAI-compatible)
 │       │   ├── gemini.py
 │       │   └── local.py             # adapter for local VLMs via transformers/vllm
 │       │
@@ -332,13 +334,15 @@ The first release should be tight, opinionated, and immediately useful. Image-on
 | `AestheticQuality` | VLM | General visual appeal, composition, lighting |
 | `StyleConsistency` | VLM | Does this match a provided style reference image? (requires ref) |
 | `CLIPSimilarity` | Classical | CLIP cosine similarity between prompt and image |
+| `ImageSimilarity` | Classical | Embedding-based image-to-image cosine similarity (CLIP/DINOv2) |
 | `ResolutionAdequacy` | Classical | Is the resolution sufficient for the intended use? |
 | `CustomCheck` | VLM (user-defined) | User-defined evaluation criteria in natural language |
 
 ### V1 Judge Backends
 
 - Claude (Anthropic API) — primary, best quality
-- GPT-4.1 (OpenAI API) — secondary, strong vision at reasonable cost
+- GPT-4.1 (OpenAI Responses API) — structured output via strict JSON schema
+- OpenRouter — gateway to 200+ models (Gemini, Llama, Mistral, etc.) via OpenAI-compatible API
 - Others can be community-contributed after launch
 
 ### V1 Rubrics
