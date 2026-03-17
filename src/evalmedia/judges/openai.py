@@ -1,4 +1,4 @@
-"""OpenAI judge implementation using the OpenAI API."""
+"""OpenAI judge implementation using the Responses API with structured output."""
 
 from __future__ import annotations
 
@@ -13,9 +13,24 @@ from evalmedia.judges._prompts import JUDGE_SYSTEM_PROMPT
 from evalmedia.judges._retry import with_retry
 from evalmedia.judges.base import JudgeResponse
 
+# JSON Schema for structured output — guarantees the response matches this shape.
+# With strict mode, the model is constrained to produce exactly this structure,
+# eliminating the need for fallback parsing strategies.
+_JUDGE_RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "reasoning": {"type": "string"},
+        "score": {"type": "number"},
+        "passed": {"type": "boolean"},
+        "confidence": {"type": "number"},
+    },
+    "required": ["reasoning", "score", "passed", "confidence"],
+    "additionalProperties": False,
+}
+
 
 class OpenAIJudge:
-    """Judge implementation using GPT-4.1 via the OpenAI API."""
+    """Judge implementation using GPT-4.1 via the OpenAI Responses API."""
 
     def __init__(
         self,
@@ -60,39 +75,42 @@ class OpenAIJudge:
         """Send image(s) + check prompt to GPT-4.1 and return structured response."""
         client = self._get_client()
 
-        # Build image content parts
+        # Build input content parts (Responses API uses input_image / input_text)
         images = image if isinstance(image, list) else [image]
         content: list[dict] = []
         for img in images:
             b64 = image_to_base64(img, fmt="PNG")
             content.append(
                 {
-                    "type": "image_url",
-                    "image_url": {
-                        "url": f"data:image/png;base64,{b64}",
-                    },
+                    "type": "input_image",
+                    "image_url": f"data:image/png;base64,{b64}",
                 }
             )
 
-        content.append({"type": "text", "text": check_prompt})
+        content.append({"type": "input_text", "text": check_prompt})
 
         async def _call():
-            response = await client.chat.completions.create(
+            response = await client.responses.create(
                 model=self._model,
-                max_tokens=max_tokens,
+                instructions=JUDGE_SYSTEM_PROMPT,
+                input=[{"role": "user", "content": content}],
+                text={
+                    "format": {
+                        "type": "json_schema",
+                        "name": "judge_response",
+                        "schema": _JUDGE_RESPONSE_SCHEMA,
+                        "strict": True,
+                    }
+                },
                 temperature=temperature,
-                response_format={"type": "json_object"},
-                messages=[
-                    {"role": "system", "content": JUDGE_SYSTEM_PROMPT},
-                    {"role": "user", "content": content},
-                ],
+                max_output_tokens=max_tokens,
             )
-            raw_text = response.choices[0].message.content or ""
+            raw_text = response.output_text
             usage = {}
             if response.usage:
                 usage = {
-                    "input_tokens": response.usage.prompt_tokens,
-                    "output_tokens": response.usage.completion_tokens,
+                    "input_tokens": response.usage.input_tokens,
+                    "output_tokens": response.usage.output_tokens,
                 }
             return parse_judge_response(
                 raw_output=raw_text,
