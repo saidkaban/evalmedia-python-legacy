@@ -30,6 +30,9 @@ def check(
     threshold: float | None = typer.Option(
         None, "--threshold", "-t", help="Override pass threshold"
     ),
+    custom: list[str] | None = typer.Option(
+        None, "--custom", help="Custom natural-language criterion (repeatable)"
+    ),
 ) -> None:
     """Evaluate a single image."""
     from evalmedia.eval import ImageEval
@@ -43,11 +46,28 @@ def check(
         rubric_instance = load_rubric(rubric)
         if threshold is not None:
             rubric_instance.pass_threshold = threshold
-    elif checks:
-        from evalmedia.checks import get_check
+    elif checks or custom:
+        check_instances = []
 
-        check_names = [c.strip() for c in checks.split(",")]
-        check_instances = [get_check(name) for name in check_names]
+        if checks:
+            from evalmedia.checks import get_check
+
+            check_names = [c.strip() for c in checks.split(",")]
+            check_instances.extend(get_check(name) for name in check_names)
+
+        if custom:
+            from evalmedia.checks.custom import CustomCheck
+
+            for i, criteria in enumerate(custom):
+                name = f"custom_{i + 1}" if len(custom) > 1 else "custom"
+                check_instances.append(
+                    CustomCheck(
+                        name=name,
+                        criteria=criteria,
+                        threshold=threshold,
+                        judge=judge,
+                    )
+                )
     else:
         # Default to general quality rubric
         from evalmedia.rubrics import GeneralQuality
