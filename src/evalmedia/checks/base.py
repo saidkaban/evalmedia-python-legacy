@@ -42,7 +42,9 @@ class BaseCheck(ABC):
 
     def run(self, image: ImageInput, prompt: str = "", **kwargs: object) -> CheckResult:
         """Synchronous entry point."""
-        return asyncio.run(self.arun(image, prompt, **kwargs))
+        judge = kwargs.get("judge")
+        resolved = judge if isinstance(judge, Judge) else None
+        return asyncio.run(self.arun(image, prompt, judge=resolved))
 
     async def arun(
         self,

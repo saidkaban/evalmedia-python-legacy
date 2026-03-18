@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from evalmedia.checks.base import BaseCheck, ClassicalCheck, VLMCheck
 from evalmedia.checks.custom import CustomCheck
 
@@ -21,8 +23,8 @@ def _register_image_checks() -> None:
 
     from evalmedia.checks.image import ALL_CHECKS
 
-    for cls in ALL_CHECKS:
-        CHECK_REGISTRY[cls.name] = cls
+    for check_cls in ALL_CHECKS:
+        CHECK_REGISTRY[check_cls.name] = check_cls
 
 
 def register_check(check_class: type[BaseCheck]) -> type[BaseCheck]:
@@ -31,7 +33,7 @@ def register_check(check_class: type[BaseCheck]) -> type[BaseCheck]:
     return check_class
 
 
-def get_check(name: str, **kwargs: object) -> BaseCheck:
+def get_check(name: str, **kwargs: Any) -> BaseCheck:
     """Instantiate a check by its registered name."""
     _register_image_checks()
     if name not in CHECK_REGISTRY:

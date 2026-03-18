@@ -21,9 +21,10 @@ class CLIPSimilarity(ClassicalCheck):
         self,
         model_name: str = "ViT-B-32",
         pretrained: str = "openai",
-        **kwargs: object,
+        threshold: float | None = None,
+        judge: str | None = None,
     ):
-        super().__init__(**kwargs)
+        super().__init__(threshold=threshold, judge=judge)
         self.model_name = model_name
         self.pretrained = pretrained
         self._model = None
@@ -60,6 +61,10 @@ class CLIPSimilarity(ClassicalCheck):
             self._load_model()
 
         import torch
+
+        assert self._preprocess is not None
+        assert self._tokenizer is not None
+        assert self._model is not None
 
         # Preprocess image
         image_input = self._preprocess(image).unsqueeze(0).to(self._device)

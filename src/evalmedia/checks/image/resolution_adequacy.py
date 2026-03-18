@@ -31,9 +31,10 @@ class ResolutionAdequacy(ClassicalCheck):
         min_width: int = 512,
         min_height: int = 512,
         target: str | None = None,
-        **kwargs: object,
+        threshold: float | None = None,
+        judge: str | None = None,
     ):
-        super().__init__(**kwargs)
+        super().__init__(threshold=threshold, judge=judge)
         if target and target in self.TARGETS:
             self.min_width, self.min_height = self.TARGETS[target]
         else:

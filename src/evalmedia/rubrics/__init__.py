@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from evalmedia.rubrics.base import Rubric, WeightedCheck
 from evalmedia.rubrics.general_quality import GeneralQuality
@@ -25,7 +26,7 @@ RUBRIC_REGISTRY: dict[str, type[Rubric]] = {
 }
 
 
-def load_rubric(name_or_path: str, **kwargs: object) -> Rubric:
+def load_rubric(name_or_path: str, **kwargs: Any) -> Rubric:
     """Load a rubric by name or from a YAML file path.
 
     Args:

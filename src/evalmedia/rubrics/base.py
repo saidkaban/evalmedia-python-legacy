@@ -22,7 +22,7 @@ class WeightedCheck(BaseModel):
 class Rubric(BaseModel):
     """A named collection of weighted checks with a pass/fail threshold."""
 
-    name: str
+    name: str = ""
     description: str = ""
     checks: list[WeightedCheck] = Field(default_factory=list)
     pass_threshold: float = 0.7

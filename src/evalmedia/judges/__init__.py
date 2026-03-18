@@ -72,4 +72,5 @@ def get_judge(name: str, **kwargs: object) -> Judge:
             f"Judge '{name}' is not available. Installed judges: {available}.{install_hint}"
         )
 
-    return _JUDGE_REGISTRY[name](**kwargs)
+    judge_instance: Judge = _JUDGE_REGISTRY[name](**kwargs)
+    return judge_instance

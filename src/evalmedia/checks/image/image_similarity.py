@@ -32,9 +32,10 @@ class ImageSimilarity(ClassicalCheck):
         model_name: str = "ViT-B-32",
         pretrained: str = "openai",
         backend: str = "clip",
-        **kwargs: object,
+        threshold: float | None = None,
+        judge: str | None = None,
     ):
-        super().__init__(**kwargs)
+        super().__init__(threshold=threshold, judge=judge)
         self.reference = reference
         self.model_name = model_name
         self.pretrained = pretrained
@@ -91,9 +92,11 @@ class ImageSimilarity(ClassicalCheck):
         else:
             self._load_clip()
 
-    def _encode_image(self, img: Image.Image):
+    def _encode_image(self, img: Image.Image):  # type: ignore[no-untyped-def]
         import torch
 
+        assert self._preprocess is not None
+        assert self._model is not None
         image_input = self._preprocess(img).unsqueeze(0).to(self._device)
         with torch.no_grad():
             if self.backend == "dinov2":
@@ -114,6 +117,8 @@ class ImageSimilarity(ClassicalCheck):
             return CheckResult(
                 name=self.name,
                 status=CheckStatus.SKIPPED,
+                score=None,
+                confidence=None,
                 reasoning=(
                     "No reference image provided. "
                     "Provide a reference via ImageSimilarity(reference=...)."

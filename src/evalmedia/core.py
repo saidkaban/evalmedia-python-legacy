@@ -23,8 +23,8 @@ class CheckResult(BaseModel):
     name: str
     status: CheckStatus
     passed: bool | None = None
-    score: float | None = Field(None, ge=0.0, le=1.0)
-    confidence: float | None = Field(None, ge=0.0, le=1.0)
+    score: float | None = Field(default=None, ge=0.0, le=1.0)
+    confidence: float | None = Field(default=None, ge=0.0, le=1.0)
     reasoning: str = ""
     metadata: dict[str, Any] = Field(default_factory=dict)
     threshold: float = 0.5

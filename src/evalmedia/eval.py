@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import time
+from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
 from PIL import Image
@@ -32,6 +33,8 @@ async def _run_check_safe(
         return CheckResult(
             name=check.name,
             status=CheckStatus.ERROR,
+            score=None,
+            confidence=None,
             error=str(e),
             reasoning=f"Check failed with error: {e}",
         )
@@ -121,7 +124,7 @@ class ImageEval:
 
 
 async def compare(
-    images: list[ImageInput],
+    images: Sequence[ImageInput],
     prompt: str,
     checks: list[BaseCheck] | None = None,
     rubric: Rubric | None = None,

@@ -46,9 +46,10 @@ The generation prompt was: "{prompt}"
     def __init__(
         self,
         reference: ImageInput | None = None,
-        **kwargs: object,
+        threshold: float | None = None,
+        judge: str | None = None,
     ):
-        super().__init__(**kwargs)
+        super().__init__(threshold=threshold, judge=judge)
         self.reference = reference
 
     def get_check_prompt(self, prompt: str, **kwargs: object) -> str:
@@ -65,6 +66,8 @@ The generation prompt was: "{prompt}"
             return CheckResult(
                 name=self.name,
                 status=CheckStatus.SKIPPED,
+                score=None,
+                confidence=None,
                 reasoning=(
                     "No reference image provided. "
                     "Provide a reference via "
