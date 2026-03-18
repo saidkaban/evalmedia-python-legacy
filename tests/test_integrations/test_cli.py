@@ -1,6 +1,5 @@
 """Tests for CLI commands."""
 
-import pytest
 from typer.testing import CliRunner
 
 from evalmedia.cli.main import app

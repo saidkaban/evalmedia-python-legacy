@@ -76,7 +76,8 @@ def _build_response(
 
     reasoning = data.get("reasoning", "")
 
-    metadata = {k: v for k, v in data.items() if k not in {"score", "passed", "confidence", "reasoning"}}
+    excluded = {"score", "passed", "confidence", "reasoning"}
+    metadata = {k: v for k, v in data.items() if k not in excluded}
 
     return JudgeResponse(
         score=score,

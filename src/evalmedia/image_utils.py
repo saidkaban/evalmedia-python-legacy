@@ -5,12 +5,11 @@ from __future__ import annotations
 import base64
 import io
 from pathlib import Path
-from typing import Union
 
 import httpx
 from PIL import Image
 
-ImageInput = Union[str, Path, Image.Image, bytes]
+ImageInput = str | Path | Image.Image | bytes
 
 
 async def load_image(source: ImageInput) -> Image.Image:

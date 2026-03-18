@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Protocol, Union, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 from PIL import Image
 from pydantic import BaseModel, Field
@@ -30,7 +30,7 @@ class Judge(Protocol):
 
     async def evaluate(
         self,
-        image: Union[Image.Image, list[Image.Image]],
+        image: Image.Image | list[Image.Image],
         prompt: str,
         check_prompt: str,
         *,

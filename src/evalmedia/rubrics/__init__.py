@@ -48,6 +48,4 @@ def load_rubric(name_or_path: str, **kwargs: object) -> Rubric:
         return Rubric.from_yaml(template_path)
 
     available = ", ".join(RUBRIC_REGISTRY.keys())
-    raise ValueError(
-        f"Rubric '{name_or_path}' not found. Built-in rubrics: {available}"
-    )
+    raise ValueError(f"Rubric '{name_or_path}' not found. Built-in rubrics: {available}")

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 from pydantic import BaseModel, Field
 
@@ -22,14 +22,14 @@ class CheckResult(BaseModel):
 
     name: str
     status: CheckStatus
-    passed: Optional[bool] = None
-    score: Optional[float] = Field(None, ge=0.0, le=1.0)
-    confidence: Optional[float] = Field(None, ge=0.0, le=1.0)
+    passed: bool | None = None
+    score: float | None = Field(None, ge=0.0, le=1.0)
+    confidence: float | None = Field(None, ge=0.0, le=1.0)
     reasoning: str = ""
     metadata: dict[str, Any] = Field(default_factory=dict)
     threshold: float = 0.5
     duration_ms: float = 0.0
-    error: Optional[str] = None
+    error: str | None = None
 
 
 class EvalResult(BaseModel):
@@ -50,14 +50,10 @@ class EvalResult(BaseModel):
     def summary(self) -> str:
         """Return a human-readable one-line summary."""
         total = len(self.check_results)
-        passed_count = sum(
-            1 for r in self.check_results if r.status == CheckStatus.PASSED
-        )
+        passed_count = sum(1 for r in self.check_results if r.status == CheckStatus.PASSED)
         status = "PASS" if self.passed else "FAIL"
 
-        failed_names = [
-            r.name for r in self.check_results if r.status == CheckStatus.FAILED
-        ]
+        failed_names = [r.name for r in self.check_results if r.status == CheckStatus.FAILED]
         detail = ""
         if failed_names:
             detail = f" Failed: {', '.join(failed_names)}."

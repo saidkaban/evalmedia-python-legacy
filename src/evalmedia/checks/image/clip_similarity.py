@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 from PIL import Image
 
 from evalmedia.checks.base import ClassicalCheck
@@ -55,7 +53,7 @@ class CLIPSimilarity(ClassicalCheck):
         self,
         image: Image.Image,
         prompt: str,
-        judge: Optional[Judge] = None,
+        judge: Judge | None = None,
     ) -> CheckResult:
         """Compute CLIP cosine similarity between the image and prompt."""
         if self._model is None:

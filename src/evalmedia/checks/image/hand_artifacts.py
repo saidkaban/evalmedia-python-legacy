@@ -8,7 +8,9 @@ class HandArtifacts(VLMCheck):
 
     name = "hand_artifacts"
     display_name = "Hand Artifacts"
-    description = "Detects extra/missing fingers, fused digits, distorted hands, and impossible hand poses."
+    description = (
+        "Detects extra/missing fingers, fused digits, distorted hands, and impossible hand poses."
+    )
     default_threshold = 0.6
 
     PROMPT_TEMPLATE = """\

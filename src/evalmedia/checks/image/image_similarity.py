@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 from PIL import Image
 
 from evalmedia.checks.base import ClassicalCheck
@@ -23,7 +21,8 @@ class ImageSimilarity(ClassicalCheck):
     name = "image_similarity"
     display_name = "Image Similarity"
     description = (
-        "Computes embedding-based cosine similarity between a reference image and the generated image."
+        "Computes embedding-based cosine similarity between "
+        "a reference image and the generated image."
     )
     default_threshold = 0.75
 
@@ -71,7 +70,9 @@ class ImageSimilarity(ClassicalCheck):
             )
 
         self._device = "cuda" if torch.cuda.is_available() else "cpu"
-        self._model = torch.hub.load("facebookresearch/dinov2", self.model_name).to(self._device).eval()
+        self._model = (
+            torch.hub.load("facebookresearch/dinov2", self.model_name).to(self._device).eval()
+        )
 
         from torchvision import transforms
 
@@ -106,7 +107,7 @@ class ImageSimilarity(ClassicalCheck):
         self,
         image: Image.Image,
         prompt: str,
-        judge: Optional[Judge] = None,
+        judge: Judge | None = None,
     ) -> CheckResult:
         """Compute embedding cosine similarity between the reference and target image."""
         if self.reference is None:
@@ -121,8 +122,6 @@ class ImageSimilarity(ClassicalCheck):
 
         if self._model is None:
             self._load_model()
-
-        import torch
 
         ref_image = await load_image(self.reference)
 

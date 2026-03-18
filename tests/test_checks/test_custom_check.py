@@ -3,7 +3,6 @@
 import asyncio
 
 import pytest
-from PIL import Image
 
 from evalmedia.checks import CustomCheck
 from evalmedia.core import CheckStatus
@@ -12,9 +11,7 @@ from evalmedia.core import CheckStatus
 class TestCustomCheckBasic:
     def test_returns_valid_check_result(self, sample_image, mock_judge):
         check = CustomCheck(name="brand", criteria="Is the image minimalist?")
-        result = asyncio.run(
-            check.evaluate(sample_image, "a clean design", judge=mock_judge)
-        )
+        result = asyncio.run(check.evaluate(sample_image, "a clean design", judge=mock_judge))
         assert result.passed is True
         assert result.score == 0.85
         assert result.name == "brand"
@@ -30,12 +27,8 @@ class TestCustomCheckBasic:
         assert "a sunset photo" in prompt
 
     def test_custom_threshold(self, sample_image, mock_judge):
-        check = CustomCheck(
-            name="strict", criteria="Is this perfect?", threshold=0.9
-        )
-        result = asyncio.run(
-            check.evaluate(sample_image, "test", judge=mock_judge)
-        )
+        check = CustomCheck(name="strict", criteria="Is this perfect?", threshold=0.9)
+        result = asyncio.run(check.evaluate(sample_image, "test", judge=mock_judge))
         # mock_judge returns 0.85, threshold 0.9 should fail
         assert result.passed is False
         assert result.status == CheckStatus.FAILED
@@ -44,36 +37,24 @@ class TestCustomCheckBasic:
 class TestCustomCheckInvert:
     def test_invert_high_score_fails(self, sample_image, mock_judge):
         """High score + invert=True should FAIL (e.g., NSFW detection)."""
-        check = CustomCheck(
-            name="nsfw", criteria="Does this contain NSFW content?", invert=True
-        )
+        check = CustomCheck(name="nsfw", criteria="Does this contain NSFW content?", invert=True)
         # mock_judge returns 0.85 >= 0.5 threshold, but inverted => FAIL
-        result = asyncio.run(
-            check.evaluate(sample_image, "test", judge=mock_judge)
-        )
+        result = asyncio.run(check.evaluate(sample_image, "test", judge=mock_judge))
         assert result.passed is False
         assert result.status == CheckStatus.FAILED
         assert result.score == 0.85
 
     def test_invert_low_score_passes(self, sample_image, mock_judge_fail):
         """Low score + invert=True should PASS."""
-        check = CustomCheck(
-            name="nsfw", criteria="Does this contain NSFW content?", invert=True
-        )
+        check = CustomCheck(name="nsfw", criteria="Does this contain NSFW content?", invert=True)
         # mock_judge_fail returns 0.25 < 0.5 threshold, inverted => PASS
-        result = asyncio.run(
-            check.evaluate(sample_image, "test", judge=mock_judge_fail)
-        )
+        result = asyncio.run(check.evaluate(sample_image, "test", judge=mock_judge_fail))
         assert result.passed is True
         assert result.status == CheckStatus.PASSED
 
     def test_invert_metadata(self, sample_image, mock_judge):
-        check = CustomCheck(
-            name="neg", criteria="Is it bad?", invert=True
-        )
-        result = asyncio.run(
-            check.evaluate(sample_image, "test", judge=mock_judge)
-        )
+        check = CustomCheck(name="neg", criteria="Is it bad?", invert=True)
+        result = asyncio.run(check.evaluate(sample_image, "test", judge=mock_judge))
         assert result.metadata["invert"] is True
 
 

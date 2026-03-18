@@ -5,7 +5,6 @@ from __future__ import annotations
 import asyncio
 import time
 from abc import ABC, abstractmethod
-from typing import Optional
 
 from PIL import Image
 
@@ -25,8 +24,8 @@ class BaseCheck(ABC):
 
     def __init__(
         self,
-        threshold: Optional[float] = None,
-        judge: Optional[str] = None,
+        threshold: float | None = None,
+        judge: str | None = None,
     ):
         self.threshold = threshold if threshold is not None else self.default_threshold
         self._judge_override = judge
@@ -36,7 +35,7 @@ class BaseCheck(ABC):
         self,
         image: Image.Image,
         prompt: str,
-        judge: Optional[Judge] = None,
+        judge: Judge | None = None,
     ) -> CheckResult:
         """Run the check on an image. Subclasses implement the logic."""
         ...
@@ -49,7 +48,7 @@ class BaseCheck(ABC):
         self,
         image: ImageInput,
         prompt: str = "",
-        judge: Optional[Judge] = None,
+        judge: Judge | None = None,
     ) -> CheckResult:
         """Async entry point that handles image loading and timing."""
         start = time.monotonic()
@@ -75,7 +74,7 @@ class VLMCheck(BaseCheck):
         self,
         image: Image.Image,
         prompt: str,
-        judge: Optional[Judge] = None,
+        judge: Judge | None = None,
     ) -> CheckResult:
         """Standard VLM evaluation flow: build prompt -> call judge -> parse."""
         if judge is None:
@@ -85,9 +84,7 @@ class VLMCheck(BaseCheck):
             judge = get_judge(judge_name)
 
         check_prompt = self.get_check_prompt(prompt)
-        response = await judge.evaluate(
-            image=image, prompt=prompt, check_prompt=check_prompt
-        )
+        response = await judge.evaluate(image=image, prompt=prompt, check_prompt=check_prompt)
         return self._parse_response(response)
 
     def _parse_response(self, response: JudgeResponse) -> CheckResult:

@@ -8,7 +8,9 @@ class FaceArtifacts(VLMCheck):
 
     name = "face_artifacts"
     display_name = "Face Artifacts"
-    description = "Detects distorted faces, wrong eye count, melted features, and other facial artifacts."
+    description = (
+        "Detects distorted faces, wrong eye count, melted features, and other facial artifacts."
+    )
     default_threshold = 0.6
 
     PROMPT_TEMPLATE = """\

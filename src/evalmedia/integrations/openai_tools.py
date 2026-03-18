@@ -40,12 +40,16 @@ def openai_tool_schema() -> dict[str, Any]:
                             "type": "string",
                             "enum": list_checks(),
                         },
-                        "description": "List of specific check names to run. If omitted, uses the rubric.",
+                        "description": (
+                            "List of specific check names to run. If omitted, uses the rubric."
+                        ),
                     },
                     "rubric": {
                         "type": "string",
                         "enum": list(RUBRIC_REGISTRY.keys()),
-                        "description": "Named rubric for predefined check sets. Defaults to 'general_quality'.",
+                        "description": (
+                            "Named rubric for predefined check sets. Defaults to 'general_quality'."
+                        ),
                     },
                 },
                 "required": ["image_url"],

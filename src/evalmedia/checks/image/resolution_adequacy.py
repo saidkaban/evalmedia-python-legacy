@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 from PIL import Image
 
 from evalmedia.checks.base import ClassicalCheck
@@ -46,7 +44,7 @@ class ResolutionAdequacy(ClassicalCheck):
         self,
         image: Image.Image,
         prompt: str,
-        judge: Optional[Judge] = None,
+        judge: Judge | None = None,
     ) -> CheckResult:
         """Check image dimensions against minimum requirements."""
         w, h = image.size

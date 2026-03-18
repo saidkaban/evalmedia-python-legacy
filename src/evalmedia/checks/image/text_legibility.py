@@ -1,12 +1,8 @@
 """Check for text legibility in AI-generated images."""
 
-from typing import Optional
-
-from PIL import Image
-
 from evalmedia.checks.base import VLMCheck
-from evalmedia.core import CheckResult, CheckStatus
-from evalmedia.judges.base import Judge, JudgeResponse
+from evalmedia.core import CheckResult
+from evalmedia.judges.base import JudgeResponse
 
 
 class TextLegibility(VLMCheck):
@@ -14,7 +10,9 @@ class TextLegibility(VLMCheck):
 
     name = "text_legibility"
     display_name = "Text Legibility"
-    description = "Checks if text present in the image is readable, correctly spelled, and makes sense."
+    description = (
+        "Checks if text present in the image is readable, correctly spelled, and makes sense."
+    )
     default_threshold = 0.5
 
     PROMPT_TEMPLATE = """\

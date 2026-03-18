@@ -69,8 +69,7 @@ def get_judge(name: str, **kwargs: object) -> Judge:
         elif name in ("openai", "openrouter"):
             install_hint = " Install with: pip install evalmedia[openai]"
         raise ValueError(
-            f"Judge '{name}' is not available. "
-            f"Installed judges: {available}.{install_hint}"
+            f"Judge '{name}' is not available. Installed judges: {available}.{install_hint}"
         )
 
     return _JUDGE_REGISTRY[name](**kwargs)

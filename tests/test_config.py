@@ -1,9 +1,5 @@
 """Tests for configuration."""
 
-import os
-
-import pytest
-
 from evalmedia.config import EvalMediaConfig, get_config, set_judge
 
 

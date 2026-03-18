@@ -36,7 +36,11 @@ def mock_judge():
         passed=True,
         confidence=0.9,
         reasoning="Mock evaluation: image looks good, no issues detected.",
-        raw_output='{"score": 0.85, "passed": true, "confidence": 0.9, "reasoning": "Mock evaluation: image looks good, no issues detected."}',
+        raw_output=(
+            '{"score": 0.85, "passed": true, "confidence": 0.9,'
+            ' "reasoning": "Mock evaluation: image looks good,'
+            ' no issues detected."}'
+        ),
         model="mock-model",
     )
     return judge
@@ -51,8 +55,13 @@ def mock_judge_fail():
         score=0.25,
         passed=False,
         confidence=0.85,
-        reasoning="Mock evaluation: significant artifacts detected in the image.",
-        raw_output='{"score": 0.25, "passed": false, "confidence": 0.85, "reasoning": "Mock evaluation: significant artifacts detected in the image."}',
+        reasoning=("Mock evaluation: significant artifacts detected in the image."),
+        raw_output=(
+            '{"score": 0.25, "passed": false,'
+            ' "confidence": 0.85, "reasoning":'
+            ' "Mock evaluation: significant artifacts'
+            ' detected in the image."}'
+        ),
         model="mock-model",
     )
     return judge

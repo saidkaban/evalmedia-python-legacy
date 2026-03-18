@@ -1,7 +1,8 @@
 """Shared prompt templates for VLM judges."""
 
 JUDGE_SYSTEM_PROMPT = """\
-You are an expert image quality evaluator for AI-generated images. You will be given an image and a specific evaluation question.
+You are an expert image quality evaluator for AI-generated images.
+You will be given an image and a specific evaluation question.
 
 Analyze the image carefully and thoroughly before giving your assessment.
 

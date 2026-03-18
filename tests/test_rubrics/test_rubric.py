@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from evalmedia.core import CheckResult, CheckStatus, EvalResult
+from evalmedia.core import CheckResult, CheckStatus
 from evalmedia.rubrics import (
     GeneralQuality,
     MarketingAsset,
@@ -13,7 +13,6 @@ from evalmedia.rubrics import (
     WeightedCheck,
     load_rubric,
 )
-from evalmedia.rubrics.base import Rubric as RubricBase
 
 
 class TestWeightedScoring:
@@ -74,8 +73,18 @@ class TestWeightedScoring:
         )
 
         results = [
-            CheckResult(name="prompt_adherence", status=CheckStatus.PASSED, score=0.9, reasoning="Good match"),
-            CheckResult(name="face_artifacts", status=CheckStatus.FAILED, score=0.2, reasoning="Extra finger detected"),
+            CheckResult(
+                name="prompt_adherence",
+                status=CheckStatus.PASSED,
+                score=0.9,
+                reasoning="Good match",
+            ),
+            CheckResult(
+                name="face_artifacts",
+                status=CheckStatus.FAILED,
+                score=0.2,
+                reasoning="Extra finger detected",
+            ),
         ]
 
         eval_result = rubric.compute_result(results)
@@ -120,7 +129,14 @@ class TestLoadRubric:
             load_rubric("nonexistent_rubric")
 
     def test_load_yaml_template(self):
-        template_path = Path(__file__).parent.parent.parent / "src" / "evalmedia" / "rubrics" / "templates" / "portrait.yaml"
+        template_path = (
+            Path(__file__).parent.parent.parent
+            / "src"
+            / "evalmedia"
+            / "rubrics"
+            / "templates"
+            / "portrait.yaml"
+        )
         if template_path.exists():
             r = Rubric.from_yaml(template_path)
             assert r.name == "portrait"

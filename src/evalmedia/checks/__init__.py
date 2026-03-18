@@ -36,9 +36,7 @@ def get_check(name: str, **kwargs: object) -> BaseCheck:
     _register_image_checks()
     if name not in CHECK_REGISTRY:
         available = ", ".join(CHECK_REGISTRY.keys()) or "(none)"
-        raise ValueError(
-            f"Check '{name}' not found. Available checks: {available}"
-        )
+        raise ValueError(f"Check '{name}' not found. Available checks: {available}")
     return CHECK_REGISTRY[name](**kwargs)
 
 

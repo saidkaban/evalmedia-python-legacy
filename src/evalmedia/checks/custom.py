@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 from evalmedia.checks.base import VLMCheck
 
 
@@ -45,9 +43,9 @@ Scoring guide:
         self,
         name: str,
         criteria: str,
-        threshold: Optional[float] = None,
+        threshold: float | None = None,
         invert: bool = False,
-        judge: Optional[str] = None,
+        judge: str | None = None,
     ):
         if not criteria or not criteria.strip():
             raise ValueError("CustomCheck requires non-empty 'criteria'.")

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 from PIL import Image
 
 from evalmedia.checks.base import VLMCheck
@@ -21,13 +19,16 @@ class StyleConsistency(VLMCheck):
     default_threshold = 0.5
 
     PROMPT_TEMPLATE = """\
-You are shown two images. The FIRST image is the reference (the style target). The SECOND image is the generated output to evaluate.
+You are shown two images. The FIRST image is the reference
+(the style target). The SECOND image is the generated output
+to evaluate.
 
 Evaluate how well the second image matches the style of the first image.
 
 Consider:
 1. **Color palette**: Do both images use similar colors and tones?
-2. **Artistic style**: Do they share the same rendering technique (photorealistic, cartoon, watercolor, etc.)?
+2. **Artistic style**: Do they share the same rendering technique
+(photorealistic, cartoon, watercolor, etc.)?
 3. **Texture and detail level**: Is the level of detail consistent?
 4. **Mood and atmosphere**: Do they convey a similar feeling?
 5. **Visual consistency**: Would a viewer consider these from the same "series" or "collection"?
@@ -57,14 +58,18 @@ The generation prompt was: "{prompt}"
         self,
         image: Image.Image,
         prompt: str,
-        judge: Optional[Judge] = None,
+        judge: Judge | None = None,
     ) -> CheckResult:
         """Evaluate style consistency — requires a reference image."""
         if self.reference is None:
             return CheckResult(
                 name=self.name,
                 status=CheckStatus.SKIPPED,
-                reasoning="No reference image provided. Provide a reference via StyleConsistency(reference=...).",
+                reasoning=(
+                    "No reference image provided. "
+                    "Provide a reference via "
+                    "StyleConsistency(reference=...)."
+                ),
             )
 
         if judge is None:

@@ -1,7 +1,5 @@
 """Tests for tool schema exports."""
 
-import pytest
-
 from evalmedia.integrations import anthropic_tool_schema, openai_tool_schema
 
 

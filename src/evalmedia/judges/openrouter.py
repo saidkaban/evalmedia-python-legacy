@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Union
-
 from PIL import Image
 
 from evalmedia.config import get_config
@@ -70,7 +68,7 @@ class OpenRouterJudge:
 
     async def evaluate(
         self,
-        image: Union[Image.Image, list[Image.Image]],
+        image: Image.Image | list[Image.Image],
         prompt: str,
         check_prompt: str,
         *,

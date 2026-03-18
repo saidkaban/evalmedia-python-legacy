@@ -2,7 +2,6 @@
 
 import asyncio
 
-import pytest
 from PIL import Image
 
 from evalmedia.checks.image import ResolutionAdequacy

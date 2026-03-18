@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Optional
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -13,9 +11,9 @@ class EvalMediaConfig(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="EVALMEDIA_")
 
     default_judge: str = "claude"
-    anthropic_api_key: Optional[str] = None
-    openai_api_key: Optional[str] = None
-    openrouter_api_key: Optional[str] = None
+    anthropic_api_key: str | None = None
+    openai_api_key: str | None = None
+    openrouter_api_key: str | None = None
     default_model_claude: str = "claude-sonnet-4-20250514"
     default_model_openai: str = "gpt-4.1"
     default_model_openrouter: str = "google/gemini-2.5-flash"
@@ -23,7 +21,7 @@ class EvalMediaConfig(BaseSettings):
     max_retries: int = 3
 
 
-_config: Optional[EvalMediaConfig] = None
+_config: EvalMediaConfig | None = None
 
 
 def get_config() -> EvalMediaConfig:

@@ -7,7 +7,6 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-from evalmedia.checks.base import BaseCheck
 from evalmedia.core import CheckResult, CheckStatus, EvalResult
 
 
@@ -61,9 +60,7 @@ class Rubric(BaseModel):
         suggestions: list[str] = []
         for wc, result in zip(self.checks, results):
             if result.status == CheckStatus.FAILED and result.reasoning:
-                suggestions.append(
-                    f"[{result.name}] {result.reasoning}"
-                )
+                suggestions.append(f"[{result.name}] {result.reasoning}")
         return suggestions
 
     @classmethod

@@ -15,8 +15,10 @@ class AestheticQuality(VLMCheck):
 Evaluate the overall aesthetic quality of this image.
 
 Consider these aspects:
-1. **Composition**: Is the framing balanced? Is there a clear focal point? Does the layout feel intentional?
-2. **Lighting**: Is the lighting natural and appropriate? Are there harsh shadows or blown-out highlights?
+1. **Composition**: Is the framing balanced? Is there a clear focal point?
+Does the layout feel intentional?
+2. **Lighting**: Is the lighting natural and appropriate?
+Are there harsh shadows or blown-out highlights?
 3. **Color harmony**: Do the colors work well together? Is the palette pleasing?
 4. **Visual clarity**: Is the image sharp where it should be? Is there appropriate depth of field?
 5. **Overall appeal**: Would this image look professional and polished to a viewer?

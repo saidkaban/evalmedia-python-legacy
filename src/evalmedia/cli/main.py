@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
-from typing import Optional
 
 import typer
 from rich.console import Console
@@ -23,19 +21,13 @@ console = Console()
 def check(
     image: str = typer.Argument(..., help="Path or URL to the image"),
     prompt: str = typer.Option("", "--prompt", "-p", help="Generation prompt"),
-    checks: Optional[str] = typer.Option(
-        None, "--checks", "-c", help="Comma-separated check names"
-    ),
-    rubric: Optional[str] = typer.Option(
-        None, "--rubric", "-r", help="Rubric name or YAML path"
-    ),
-    judge: Optional[str] = typer.Option(
-        None, "--judge", "-j", help="Judge backend (claude, openai)"
-    ),
+    checks: str | None = typer.Option(None, "--checks", "-c", help="Comma-separated check names"),
+    rubric: str | None = typer.Option(None, "--rubric", "-r", help="Rubric name or YAML path"),
+    judge: str | None = typer.Option(None, "--judge", "-j", help="Judge backend (claude, openai)"),
     format: str = typer.Option(
         "table", "--format", "-f", help="Output format: table, json, summary"
     ),
-    threshold: Optional[float] = typer.Option(
+    threshold: float | None = typer.Option(
         None, "--threshold", "-t", help="Override pass threshold"
     ),
 ) -> None:
@@ -80,16 +72,10 @@ def check(
 
 @app.command()
 def compare(
-    images_dir: str = typer.Argument(
-        ..., help="Directory of images or comma-separated paths"
-    ),
+    images_dir: str = typer.Argument(..., help="Directory of images or comma-separated paths"),
     prompt: str = typer.Option(..., "--prompt", "-p", help="Generation prompt"),
-    rubric: Optional[str] = typer.Option(
-        "general_quality", "--rubric", "-r", help="Rubric name"
-    ),
-    judge: Optional[str] = typer.Option(
-        None, "--judge", "-j", help="Judge backend"
-    ),
+    rubric: str | None = typer.Option("general_quality", "--rubric", "-r", help="Rubric name"),
+    judge: str | None = typer.Option(None, "--judge", "-j", help="Judge backend"),
     format: str = typer.Option(
         "table", "--format", "-f", help="Output format: table, json, summary"
     ),
@@ -152,7 +138,6 @@ def compare(
 @app.command(name="list-checks")
 def list_checks_cmd() -> None:
     """List all available checks."""
-    from evalmedia.checks import list_checks
     from evalmedia.checks.image import ALL_CHECKS
 
     table = Table(title="Available Checks")

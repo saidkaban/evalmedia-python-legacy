@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import asyncio
 import time
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
+
+from PIL import Image
 
 from evalmedia.checks.base import BaseCheck
 from evalmedia.config import get_config
@@ -19,7 +21,7 @@ if TYPE_CHECKING:
 
 async def _run_check_safe(
     check: BaseCheck,
-    image: "Image.Image",
+    image: Image.Image,
     prompt: str,
     judge: Judge,
 ) -> CheckResult:
@@ -42,9 +44,9 @@ class ImageEval:
     def run(
         image: ImageInput,
         prompt: str = "",
-        checks: Optional[list[BaseCheck]] = None,
-        rubric: Optional[Rubric] = None,
-        judge: Optional[str] = None,
+        checks: list[BaseCheck] | None = None,
+        rubric: Rubric | None = None,
+        judge: str | None = None,
     ) -> EvalResult:
         """Synchronous evaluation entry point."""
         try:
@@ -56,17 +58,15 @@ class ImageEval:
         except RuntimeError:
             pass
 
-        return asyncio.run(
-            ImageEval.arun(image, prompt, checks=checks, rubric=rubric, judge=judge)
-        )
+        return asyncio.run(ImageEval.arun(image, prompt, checks=checks, rubric=rubric, judge=judge))
 
     @staticmethod
     async def arun(
         image: ImageInput,
         prompt: str = "",
-        checks: Optional[list[BaseCheck]] = None,
-        rubric: Optional[Rubric] = None,
-        judge: Optional[str] = None,
+        checks: list[BaseCheck] | None = None,
+        rubric: Rubric | None = None,
+        judge: str | None = None,
     ) -> EvalResult:
         """Async evaluation entry point. Runs all checks concurrently."""
         start = time.monotonic()
@@ -89,8 +89,7 @@ class ImageEval:
 
         # Run all checks concurrently
         tasks = [
-            _run_check_safe(check, pil_image, prompt, judge_instance)
-            for check in check_instances
+            _run_check_safe(check, pil_image, prompt, judge_instance) for check in check_instances
         ]
         check_results = await asyncio.gather(*tasks)
 
@@ -106,13 +105,9 @@ class ImageEval:
         # Simple aggregation when no rubric
         scores = [r.score for r in check_results if r.score is not None]
         overall_score = sum(scores) / len(scores) if scores else 0.0
-        all_passed = all(
-            r.passed for r in check_results if r.passed is not None
-        )
+        all_passed = all(r.passed for r in check_results if r.passed is not None)
         suggestions = [
-            r.reasoning
-            for r in check_results
-            if r.status == CheckStatus.FAILED and r.reasoning
+            r.reasoning for r in check_results if r.status == CheckStatus.FAILED and r.reasoning
         ]
 
         return EvalResult(
@@ -128,18 +123,17 @@ class ImageEval:
 async def compare(
     images: list[ImageInput],
     prompt: str,
-    checks: Optional[list[BaseCheck]] = None,
-    rubric: Optional[Rubric] = None,
-    judge: Optional[str] = None,
-    labels: Optional[list[str]] = None,
+    checks: list[BaseCheck] | None = None,
+    rubric: Rubric | None = None,
+    judge: str | None = None,
+    labels: list[str] | None = None,
 ) -> CompareResult:
     """Evaluate multiple images and rank them by score."""
     if labels is None:
         labels = [f"image_{i}" for i in range(len(images))]
 
     tasks = [
-        ImageEval.arun(img, prompt, checks=checks, rubric=rubric, judge=judge)
-        for img in images
+        ImageEval.arun(img, prompt, checks=checks, rubric=rubric, judge=judge) for img in images
     ]
     results = await asyncio.gather(*tasks)
 

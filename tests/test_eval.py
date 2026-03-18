@@ -1,10 +1,9 @@
 """Tests for ImageEval runner."""
 
 import asyncio
-from unittest.mock import AsyncMock, patch
+from unittest.mock import patch
 
 import pytest
-from PIL import Image
 
 from evalmedia.checks.image import PromptAdherence, ResolutionAdequacy
 from evalmedia.core import CheckStatus, EvalResult
@@ -81,6 +80,7 @@ class TestImageEval:
 
     def test_concurrent_execution(self, sample_image, mock_judge):
         """Multiple checks should run concurrently."""
+
         async def run():
             with patch("evalmedia.eval.get_judge", return_value=mock_judge):
                 return await ImageEval.arun(
