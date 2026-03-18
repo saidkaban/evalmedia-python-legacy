@@ -365,6 +365,10 @@ The first release should be tight, opinionated, and immediately useful. Image-on
 - Web dashboard or UI (not in v1 — may come later as a managed cloud offering)
 - Benchmark datasets with human agreement scores (v2 — build the infrastructure for it in v1 but don't block launch on having calibration data)
 
+### Future Improvements
+
+- **Standalone custom check YAML files**: Allow defining custom checks as standalone YAML files (not only inside rubrics), so they can be referenced by name with `--checks` on the CLI. Currently custom criteria checks can only be defined inline in a rubric YAML or via `--custom` on the CLI.
+
 ## Implementation Priorities (Build Order)
 
 ### Phase 1: Core abstractions + one working check
