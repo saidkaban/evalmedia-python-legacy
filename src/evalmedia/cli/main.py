@@ -4,8 +4,12 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import typer
+
+if TYPE_CHECKING:
+    from evalmedia.checks.base import BaseCheck
 from rich.console import Console
 from rich.table import Table
 
@@ -37,7 +41,7 @@ def check(
     """Evaluate a single image."""
     from evalmedia.eval import ImageEval
 
-    check_instances = None
+    check_instances: list[BaseCheck] | None = None
     rubric_instance = None
 
     if rubric:

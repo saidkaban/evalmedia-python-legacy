@@ -83,11 +83,13 @@ class Rubric(BaseModel):
           with optional ``name``, ``threshold``, ``invert``, and ``judge`` fields.
         """
         from evalmedia.checks import get_check
+        from evalmedia.checks.base import BaseCheck
 
         weighted_checks = []
         for entry in data.get("checks", []):
             weight = entry.get("weight", 1.0)
             threshold = entry.get("threshold")
+            check_instance: BaseCheck
 
             if "criteria" in entry:
                 from evalmedia.checks.custom import CustomCheck
