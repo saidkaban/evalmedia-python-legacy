@@ -75,18 +75,37 @@ class Rubric(BaseModel):
 
     @classmethod
     def from_dict(cls, data: dict) -> Rubric:
-        """Create a rubric from a dictionary (e.g., parsed YAML)."""
+        """Create a rubric from a dictionary (e.g., parsed YAML).
+
+        Each check entry can be either:
+        - A registered check: ``{check: "prompt_adherence", weight: 0.5}``
+        - A custom criteria check: ``{criteria: "Is it minimalist?", weight: 0.3}``
+          with optional ``name``, ``threshold``, ``invert``, and ``judge`` fields.
+        """
         from evalmedia.checks import get_check
 
         weighted_checks = []
         for entry in data.get("checks", []):
-            check_name = entry["check"]
             weight = entry.get("weight", 1.0)
-            params = entry.get("params", {})
             threshold = entry.get("threshold")
-            if threshold is not None:
-                params["threshold"] = threshold
-            check_instance = get_check(check_name, **params)
+
+            if "criteria" in entry:
+                from evalmedia.checks.custom import CustomCheck
+
+                check_instance = CustomCheck(
+                    name=entry.get("name", entry["criteria"][:40]),
+                    criteria=entry["criteria"],
+                    threshold=threshold,
+                    invert=entry.get("invert", False),
+                    judge=entry.get("judge"),
+                )
+            else:
+                check_name = entry["check"]
+                params = entry.get("params", {})
+                if threshold is not None:
+                    params["threshold"] = threshold
+                check_instance = get_check(check_name, **params)
+
             weighted_checks.append(WeightedCheck(check=check_instance, weight=weight))
 
         return cls(
