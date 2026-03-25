@@ -27,7 +27,9 @@ def check(
     prompt: str = typer.Option("", "--prompt", "-p", help="Generation prompt"),
     checks: str | None = typer.Option(None, "--checks", "-c", help="Comma-separated check names"),
     rubric: str | None = typer.Option(None, "--rubric", "-r", help="Rubric name or YAML path"),
-    judge: str | None = typer.Option(None, "--judge", "-j", help="Judge backend (claude, openai)"),
+    judge: str | None = typer.Option(
+        None, "--judge", "-j", help="Judge backend (claude, openai, ollama)"
+    ),
     format: str = typer.Option(
         "table", "--format", "-f", help="Output format: table, json, summary"
     ),

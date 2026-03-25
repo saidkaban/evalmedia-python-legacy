@@ -17,6 +17,8 @@ class EvalMediaConfig(BaseSettings):
     default_model_claude: str = "claude-sonnet-4-20250514"
     default_model_openai: str = "gpt-4.1"
     default_model_openrouter: str = "google/gemini-2.5-flash"
+    default_model_ollama: str = "llama3.2-vision"
+    ollama_base_url: str = "http://localhost:11434/v1"
     timeout_seconds: float = 60.0
     max_retries: int = 3
 
@@ -49,6 +51,7 @@ def set_judge(name: str, **kwargs: object) -> None:
             config.openai_api_key = str(kwargs["api_key"])
         elif name == "openrouter":
             config.openrouter_api_key = str(kwargs["api_key"])
+        # ollama does not require an API key
 
     if "model" in kwargs:
         if name == "claude":
@@ -57,3 +60,5 @@ def set_judge(name: str, **kwargs: object) -> None:
             config.default_model_openai = str(kwargs["model"])
         elif name == "openrouter":
             config.default_model_openrouter = str(kwargs["model"])
+        elif name == "ollama":
+            config.default_model_ollama = str(kwargs["model"])

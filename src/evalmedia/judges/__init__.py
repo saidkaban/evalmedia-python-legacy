@@ -48,6 +48,13 @@ def _register_defaults() -> None:
     except ImportError:
         pass
 
+    try:
+        from evalmedia.judges.ollama import OllamaJudge
+
+        register_judge("ollama", OllamaJudge)
+    except ImportError:
+        pass
+
 
 def get_judge(name: str, **kwargs: object) -> Judge:
     """Get a judge instance by name.
@@ -66,7 +73,7 @@ def get_judge(name: str, **kwargs: object) -> Judge:
         install_hint = ""
         if name == "claude":
             install_hint = " Install with: pip install evalmedia[claude]"
-        elif name in ("openai", "openrouter"):
+        elif name in ("openai", "openrouter", "ollama"):
             install_hint = " Install with: pip install evalmedia[openai]"
         raise ValueError(
             f"Judge '{name}' is not available. Installed judges: {available}.{install_hint}"
