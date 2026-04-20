@@ -142,7 +142,7 @@ wheels = [
 
 [[package]]
 name = "evalmedia"
-version = "0.2.0"
+version = "0.4.0"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
@@ -180,6 +180,9 @@ dev = [
     { name = "ruff" },
     { name = "types-pyyaml" },
 ]
+ollama = [
+    { name = "openai" },
+]
 openai = [
     { name = "openai" },
 ]
@@ -187,10 +190,11 @@ openai = [
 [package.metadata]
 requires-dist = [
     { name = "anthropic", marker = "extra == 'claude'", specifier = ">=0.40" },
-    { name = "evalmedia", extras = ["claude", "openai", "classical", "cli"], marker = "extra == 'all'" },
+    { name = "evalmedia", extras = ["claude", "openai", "ollama", "classical", "cli"], marker = "extra == 'all'" },
     { name = "httpx", specifier = ">=0.25" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.10" },
     { name = "open-clip-torch", marker = "extra == 'classical'", specifier = ">=2.24" },
+    { name = "openai", marker = "extra == 'ollama'", specifier = ">=1.50" },
     { name = "openai", marker = "extra == 'openai'", specifier = ">=1.50" },
     { name = "pillow", specifier = ">=10.0" },
     { name = "pydantic", specifier = ">=2.0" },
@@ -205,7 +209,7 @@ requires-dist = [
     { name = "typer", marker = "extra == 'cli'", specifier = ">=0.12" },
     { name = "types-pyyaml", marker = "extra == 'dev'", specifier = ">=6.0" },
 ]
-provides-extras = ["claude", "openai", "classical", "cli", "dev", "all"]
+provides-extras = ["claude", "openai", "ollama", "classical", "cli", "dev", "all"]
 
 [[package]]
 name = "exceptiongroup"
